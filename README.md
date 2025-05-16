@@ -38,8 +38,6 @@ cd Gyma
 
 ### 2. Configurar e Rodar o Backend
 ```bash
-Copiar
-Editar
 cd API
 ./mvnw spring-boot:run
 ```
