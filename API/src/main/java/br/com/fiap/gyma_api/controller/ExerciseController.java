@@ -42,7 +42,7 @@ public class ExerciseController {
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Buscar exercício", description = "Retorna o exercício buscado pelo ID")
+    @Operation(summary = "Buscar exercício pelo id", description = "Retorna o exercício buscado pelo ID")
     public ResponseEntity<Exercise> get(@PathVariable Long id) {
         log.info("Buscando exercício: " + id);
         return ResponseEntity.ok(getExercise(id));
