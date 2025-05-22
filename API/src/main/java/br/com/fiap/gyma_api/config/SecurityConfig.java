@@ -21,11 +21,11 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.authorizeHttpRequests(
-                auth -> auth
-                        .requestMatchers("/login/**").permitAll()
-                        .anyRequest()
-                        .authenticated()
-        )
+                        auth -> auth
+                                .requestMatchers("/login/**").permitAll()
+                                .anyRequest()
+                                .authenticated()
+                )
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
