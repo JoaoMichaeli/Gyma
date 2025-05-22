@@ -1,29 +1,16 @@
-# 🏋️‍♂️ Gyma
+# 🏋️‍♂️ Gyma-API
 
-**Gyma** é uma aplicação full stack para gerenciamento de treinos, com cadastro de exercícios físicos e planos personalizados. O projeto é dividido em duas partes:
-
-- `API/`: Backend com Java e Spring Boot.
-- `WEB/`: Frontend com React e TypeScript.
-
-O objetivo principal é facilitar o acompanhamento de treinos e a criação de planos personalizados para usuários em academias ou uso pessoal.
+**Gyma-API** é o backend da aplicação Gyma, responsável por gerenciar os dados de exercícios físicos e planos de treino personalizados. Desenvolvido com Java e Spring Boot, fornece uma API RESTful para integração com o frontend.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-### 🛠 Backend (API)
 - Java 17+
 - Spring Boot
 - Spring Data JPA
-- Banco de dados relacional (ex: PostgreSQL, MySQL)
+- Banco de dados em memória **H2**
 - Maven
-
-### 💻 Frontend (WEB)
-- React
-- TypeScript
-- JavaScript
-- CSS3
-- Vite
 
 ---
 
@@ -33,23 +20,22 @@ O objetivo principal é facilitar o acompanhamento de treinos e a criação de p
 
 ```bash
 git clone https://github.com/JoaoMichaeli/Gyma.git
-cd Gyma
+cd Gyma/API
 ```
 
-### 2. Configurar e Rodar o Backend
+### 2. Execute a aplicação
+
 ```bash
-cd API
 ./mvnw spring-boot:run
 ```
-## ⚠️ Certifique-se de configurar o banco de dados no application.properties antes de rodar.
 
-### 3. Rodar o Frontend
-```bash
-cd WEB
-npm install
-npm run dev
-```
-## Acesse a aplicação em: http://localhost:PORTA
+A API estará disponível em: `http://localhost:8080`
+
+A interface do banco H2 pode ser acessada em:  
+`http://localhost:8080/h2-console`  
+(Verifique o `application.properties` para as credenciais e URL)
+
+---
 
 ## 🧪 Funcionalidades
 
