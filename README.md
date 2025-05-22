@@ -54,5 +54,4 @@ A interface do banco H2 pode ser acessada em:
 ## 👨‍💻 Autor
 
 Feito por **João Victor Michaeli de Bem**  
-Estudante de **Análise e Desenvolvimento de Sistemas** na **FIAP**  
-Apaixonado por desenvolvimento **full stack** e **inteligência artificial**.
+Estudante de **Análise e Desenvolvimento de Sistemas** na **FIAP**
