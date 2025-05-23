@@ -1,8 +1,10 @@
 package br.com.fiap.gyma_api.controller;
 
+import br.com.fiap.gyma_api.model.Exercise;
 import br.com.fiap.gyma_api.model.Plan;
 import br.com.fiap.gyma_api.model.User;
 import br.com.fiap.gyma_api.repository.PlanRepository;
+import br.com.fiap.gyma_api.service.PlanService;
 import br.com.fiap.gyma_api.specification.PlanSpecification;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,6 +34,9 @@ public class PlanController {
     @Autowired
     private PlanRepository repository;
 
+    @Autowired
+    private PlanService planService;
+
     @GetMapping
     @Operation(summary = "Listar planos", description = "Retorna um array com todos os planos")
     @Cacheable("plans")
@@ -55,6 +60,13 @@ public class PlanController {
         log.info("Cadastrando plano: " + plan.getName());
         plan.setUser(user);
         return repository.save(plan);
+    }
+
+    @PostMapping("/{id}/exercises")
+    public ResponseEntity<Plan> adicionarExercicio(@PathVariable Long id, @RequestBody Exercise novoExercise) {
+        log.info("Adicionando novo exercicio atualizado");
+        Plan planoAtualizado = planService.adicionarExercicioNoPlano(id, novoExercise);
+        return ResponseEntity.ok(planoAtualizado);
     }
 
     @GetMapping("{id}")
@@ -89,6 +101,8 @@ public class PlanController {
 
         return ResponseEntity.ok(savedPlano);
     }
+
+
 
     private Plan getPlan(Long id) {
         return repository.findById(id)
