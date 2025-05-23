@@ -77,13 +77,17 @@ public class PlanController {
     }
 
     @PutMapping("{id}")
-    @Operation(summary = "Atualizar plano", description = "Atualizar o plano")
+    @CacheEvict(value = "plans", allEntries = true)
     public ResponseEntity<Plan> update(@PathVariable Long id, @RequestBody @Valid Plan plan, @AuthenticationPrincipal User user) {
-        log.info("Atualizando plano: " + id + " com " + plan);
         var oldPlano = getPlan(id);
-        BeanUtils.copyProperties(plan, oldPlano, "id");
-        repository.save(oldPlano);
-        return ResponseEntity.ok(oldPlano);
+
+        oldPlano.setName(plan.getName());
+        oldPlano.setType(plan.getType());
+        oldPlano.setExercises(plan.getExercises());
+
+        var savedPlano = repository.save(oldPlano);
+
+        return ResponseEntity.ok(savedPlano);
     }
 
     private Plan getPlan(Long id) {
