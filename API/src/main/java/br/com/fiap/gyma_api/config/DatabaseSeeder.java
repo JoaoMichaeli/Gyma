@@ -3,7 +3,6 @@ package br.com.fiap.gyma_api.config;
 import br.com.fiap.gyma_api.model.*;
 import br.com.fiap.gyma_api.repository.ExerciseRepository;
 import br.com.fiap.gyma_api.repository.PlanRepository;
-import br.com.fiap.gyma_api.repository.PlanTypeRepository;
 import br.com.fiap.gyma_api.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,6 @@ public class DatabaseSeeder {
 
     @Autowired
     private PlanRepository planRepository;
-
-    @Autowired
-    private PlanTypeRepository planTypeRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,14 +43,9 @@ public class DatabaseSeeder {
 
         userRepository.saveAll(List.of(joao, saes));
 
-        PlanType hipertrofia = new PlanType(null, "Hipertrofia", null);
-        PlanType emagrecimento = new PlanType(null, "Emagrecimento", null);
-
-        planTypeRepository.saveAll(List.of(hipertrofia, emagrecimento));
-
         Exercise remadaCurvada = Exercise.builder()
                 .name("Remada Curvada")
-                .muscleGroup(List.of(MuscleGroup.Costas))
+                .muscleGroup("Costas")
                 .repetitions(10)
                 .series(4)
                 .restSec(60)
@@ -62,7 +53,7 @@ public class DatabaseSeeder {
 
         Exercise supinoReto = Exercise.builder()
                 .name("Supino Reto")
-                .muscleGroup(List.of(MuscleGroup.Peito))
+                .muscleGroup("Peito")
                 .repetitions(12)
                 .series(3)
                 .restSec(80)
@@ -70,7 +61,7 @@ public class DatabaseSeeder {
 
         Exercise agachamento = Exercise.builder()
                 .name("Agachamento")
-                .muscleGroup(List.of(MuscleGroup.Perna))
+                .muscleGroup("Perna")
                 .repetitions(15)
                 .series(3)
                 .restSec(90)
@@ -80,18 +71,25 @@ public class DatabaseSeeder {
 
         Plan planoHipertrofia = Plan.builder()
                 .name("Plano Hipertrofia Básico")
-                .planType(hipertrofia)
+                .type("hipertrofia")
+                .exercises(List.of(remadaCurvada, supinoReto))
+                .user(joao)
+                .build();
+
+        Plan planoHipertrofia2 = Plan.builder()
+                .name("Plano Hipertrofia Básico 2")
+                .type("hipertrofia")
                 .exercises(List.of(remadaCurvada, supinoReto))
                 .user(joao)
                 .build();
 
         Plan planoEmagrecimento = Plan.builder()
                 .name("Plano Emagrecimento Básico")
-                .planType(emagrecimento)
+                .type("hipertrofia")
                 .exercises(List.of(agachamento, supinoReto))
                 .user(saes)
                 .build();
 
-        planRepository.saveAll(List.of(planoHipertrofia, planoEmagrecimento));
+        planRepository.saveAll(List.of(planoHipertrofia, planoEmagrecimento, planoHipertrofia2));
     }
 }

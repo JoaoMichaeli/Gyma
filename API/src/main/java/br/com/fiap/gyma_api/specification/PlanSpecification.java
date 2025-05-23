@@ -23,7 +23,7 @@ public class PlanSpecification {
 
             if (filters.planType() != null) {
                 predicates.add(
-                        cb.equal(root.get("planType"), filters.planType()));
+                        cb.equal(root.get("planType").get("id"), filters.planType()));
             }
 
             if (filters.minExercises() != null || filters.maxExercises() != null) {

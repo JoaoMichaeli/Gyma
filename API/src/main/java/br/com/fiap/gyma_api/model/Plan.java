@@ -23,13 +23,14 @@ public class Plan {
     @NotBlank(message = "Campo obrigatório")
     private String name;
 
-    @ManyToOne
-    private PlanType planType;
+    @NotBlank(message = "Campo obrigatório")
+    private String type;
 
     @ManyToMany
     private List<Exercise> exercises;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 

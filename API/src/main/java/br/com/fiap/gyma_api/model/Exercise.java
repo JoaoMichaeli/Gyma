@@ -23,9 +23,8 @@ public class Exercise {
     @NotBlank(message = "O nome não pode estar em branco")
     private String name;
 
-    @NotEmpty(message = "O grupo muscular não pode estar vazio")
-    @ElementCollection
-    private List<MuscleGroup> muscleGroup;
+    @NotBlank(message = "O grupo muscular não pode estar em branco")
+    private String muscleGroup;
 
     @Min(value = 1, message = "O número de repetições deve ser pelo menos 1")
     private int repetitions;

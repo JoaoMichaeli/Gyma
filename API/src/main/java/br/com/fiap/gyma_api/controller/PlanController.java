@@ -1,7 +1,6 @@
 package br.com.fiap.gyma_api.controller;
 
 import br.com.fiap.gyma_api.model.Plan;
-import br.com.fiap.gyma_api.model.PlanType;
 import br.com.fiap.gyma_api.model.User;
 import br.com.fiap.gyma_api.repository.PlanRepository;
 import br.com.fiap.gyma_api.specification.PlanSpecification;
@@ -23,15 +22,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.net.URI;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("plans")
 @Slf4j
 public class PlanController {
 
-    public record PlanFilters(String name, PlanType planType, Integer minExercises, Integer maxExercises) {}
+    public record PlanFilters(String name, Long planType, Integer minExercises, Integer maxExercises) {}
 
     @Autowired
     private PlanRepository repository;
@@ -53,12 +49,11 @@ public class PlanController {
 
     @PostMapping
     @CacheEvict(value = "plans", allEntries = true)
-    @Operation(summary = "Inserir planos", description = "Inserir um plano novo",responses = @ApiResponse(responseCode = "400", description = "Validação falhou"))
+    @Operation(summary = "Inserir planos", description = "Inserir um plano novo", responses = @ApiResponse(responseCode = "400", description = "Validação falhou"))
     @ResponseStatus(code = HttpStatus.CREATED)
     public Plan create(@RequestBody @Valid Plan plan, @AuthenticationPrincipal User user) {
         log.info("Cadastrando plano: " + plan.getName());
         plan.setUser(user);
-        Plan saved = repository.save(plan);
         return repository.save(plan);
     }
 
@@ -73,7 +68,11 @@ public class PlanController {
     @Operation(summary = "Deletar plano", description = "Deleta o plano escolhido")
     public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
         log.info("Deletando plano: " + id);
-        repository.delete(getPlan(id));
+        Plan plan = getPlan(id);
+        if (!plan.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode deletar este plano");
+        }
+        repository.delete(plan);
         return ResponseEntity.noContent().build();
     }
 
@@ -82,6 +81,9 @@ public class PlanController {
     public ResponseEntity<Plan> update(@PathVariable Long id, @RequestBody @Valid Plan plan, @AuthenticationPrincipal User user) {
         log.info("Atualizando plano: " + id + " com " + plan);
         var oldPlano = getPlan(id);
+        if (!plan.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode atualizar este plano");
+        }
         BeanUtils.copyProperties(plan, oldPlano, "id");
         repository.save(oldPlano);
         return ResponseEntity.ok(oldPlano);
