@@ -1,57 +1,92 @@
-# 🏋️‍♂️ Gyma-API
+# Gyma-API
 
-**Gyma-API** é o backend da aplicação Gyma, responsável por gerenciar os dados de exercícios físicos e planos de treino personalizados. Desenvolvido com Java e Spring Boot, fornece uma API RESTful para integração com o frontend.
+Gyma-API é a API RESTful construída com Java Spring Boot que serve como backend para a aplicação Gyma. Ela gerencia usuários, planos de treino e exercícios, fornecendo endpoints seguros com autenticação HTTP Basic.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias utilizadas
 
 - Java 17+
-- Spring Boot
-- Spring Data JPA
-- Banco de dados em memória **H2**
-- Maven
+- Spring Boot 3.x
+- Spring Security (HTTP Basic Authentication)
+- Spring Data JPA com Hibernate
+- Banco de dados H2 para desenvolvimento
+- Maven para gerenciamento de dependências
+- MapStruct para mapeamento DTO
+- Swagger/OpenAPI para documentação
 
 ---
 
-## 🔧 Como Executar Localmente
+## Funcionalidades principais
 
-### 1. Clone o repositório
+- Autenticação HTTP Basic para proteger endpoints
+- CRUD completo para usuários, planos e exercícios
+- Relacionamento entre entidades: Planos possuem vários Exercícios
+- Seeders para popular banco de dados com dados de teste
+- Tratamento de erros e mensagens claras para o frontend
+- Paginação e filtros básicos
+- Suporte para CORS para comunicação com frontend
+
+---
+
+## Estrutura do projeto
+
+- `src/main/java/com/gymaapi`
+  - `controller` — endpoints REST controllers
+  - `service` — regras de negócio e serviços
+  - `repository` — interfaces de persistência JPA
+  - `model` — entidades JPA e DTOs
+  - `config` — configurações de segurança e CORS
+  - `exception` — tratamento centralizado de erros
+
+---
+
+## Como executar localmente
+
+### Pré-requisitos
+
+- Java 17 ou superior instalado
+- Maven 3+
+- Banco de dados configurado (padrão H2 em memória)
+
+### Passos
+
+1. Clone o repositório:
 
 ```bash
-git clone https://github.com/JoaoMichaeli/Gyma.git
-cd Gyma/API
+git clone https://github.com/seuusuario/Gyma-API.git
+cd Gyma-API
 ```
 
-### 2. Execute a aplicação
+2. Build e rodar:
 
 ```bash
-./mvnw spring-boot:run
+mvn clean install
+mvn spring-boot:run
 ```
 
-A API estará disponível em: `http://localhost:8080`
-
-A interface do banco H2 pode ser acessada em:  
-`http://localhost:8080/h2-console`  
-(Verifique o `application.properties` para as credenciais e URL)
+3. A API estará disponível em `http://localhost:8080`
 
 ---
 
-## 🧪 Funcionalidades
+## Endpoints principais
 
-### ✅ Implementadas
-- Cadastro de exercícios físicos  
-- Listagem de exercícios cadastrados
-
-### 🚧 Em desenvolvimento
-- Cadastro e edição de planos de treino  
-- Associação de exercícios aos planos  
-- Autenticação de usuários  
-- Dashboard com resumo de treinos
+- `POST /users/login` — login (pode usar HTTP Basic)
+- `GET /plans` — lista planos do usuário autenticado
+- `POST /plans` — cria novo plano
+- `GET /plans/{id}` — detalhes do plano
+- `PUT /plans/{id}` — editar plano
+- `DELETE /plans/{id}` — remover plano
+- `POST /plans/{planId}/exercises` — adicionar exercício a plano
+- `PUT /exercises/{id}` — editar exercício
+- `DELETE /exercises/{id}` — remover exercício
 
 ---
 
-## 👨‍💻 Autor
+## Configurações importantes
 
-Feito por **João Victor Michaeli de Bem**  
-Estudante de **Análise e Desenvolvimento de Sistemas** na **FIAP**
+- A autenticação é feita via HTTP Basic, configurada no Spring Security
+- Cross-origin configurado para permitir requisições do frontend (localhost:3000)
+- Banco H2 é usado para desenvolvimento; trocar para MySQL/Postgres em produção
+- Arquivo `application.properties` ou `application.yml` para configuração de banco, porta e segurança
+- Dados seeders criam usuários, planos e exercícios iniciais para testes
