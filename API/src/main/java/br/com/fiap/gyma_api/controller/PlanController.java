@@ -81,9 +81,6 @@ public class PlanController {
     public ResponseEntity<Plan> update(@PathVariable Long id, @RequestBody @Valid Plan plan, @AuthenticationPrincipal User user) {
         log.info("Atualizando plano: " + id + " com " + plan);
         var oldPlano = getPlan(id);
-        if (!plan.getUser().getId().equals(user.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode atualizar este plano");
-        }
         BeanUtils.copyProperties(plan, oldPlano, "id");
         repository.save(oldPlano);
         return ResponseEntity.ok(oldPlano);
